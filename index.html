@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reality Check</title>
+    <style>
+        body {
+            font-family: 'Arial Black', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #000;
+            display: none; 
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .alert-card {
+            padding: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .overlay.active { display: flex; }
+
+        #alertMessage { 
+            font-size: 2.8rem; /* Visible and Bold */
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 50px;
+            line-height: 1.1;
+            letter-spacing: -2px;
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 0 40px;
+        }
+
+        .ok-btn {
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 20px;
+            font-weight: 900;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .choice-btn {
+            background: transparent;
+            color: #fff;
+            border: 1px solid #333;
+            padding: 18px;
+            font-weight: 900;
+            cursor: pointer;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+        }
+
+        .trigger-btn {
+            padding: 18px 35px;
+            background: #fff;
+            color: #000;
+            border: none;
+            font-weight: 900;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="trigger-btn" onclick="startSequence()">MAY CHIKA AKO SA KANYA...</button>
+
+    <div class="overlay" id="alertOverlay">
+        <div class="alert-card">
+            <p id="alertMessage">YUNG TOTOO?</p>
+            <div id="buttonArea" class="btn-container">
+                <button class="ok-btn" id="actionBtn" onclick="nextStep()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const steps = [
+            "MAHAL KA BA TALAGA?",
+            "MAY KA-CHAT SIYANG IBA.",
+            "DI KA NIYA PRIORIDAD.",
+            "NAPIPILITAN LANG SIYA.",
+            "MAY TINATAGO SIYA.",
+            "OPTION KA LANG PALA.",
+            "IIWAN KA RIN NIYAN.",
+            "NASAAN SIYA NGAYON?",
+            "TULOG NA BA TALAGA?"
+        ];
+
+        let currentStep = 0;
+
+        function startSequence() {
+            currentStep = 0;
+            updateAlertContent();
+            document.getElementById('alertOverlay').classList.add('active');
+        }
+
+        function updateAlertContent() {
+            document.getElementById('alertMessage').innerText = steps[currentStep];
+        }
+
+        function nextStep() {
+            currentStep++;
+            if (currentStep < steps.length) {
+                updateAlertContent();
+            } else {
+                showFinalChoices();
+            }
+        }
+
+        function showFinalChoices() {
+            document.getElementById('alertMessage').innerText = "KAYA MO PA?";
+            const btnArea = document.getElementById('buttonArea');
+            btnArea.innerHTML = `
+                <button class="choice-btn" onclick="finalAlert('ok')">OKAY LANG?</button>
+                <button class="choice-btn" onclick="finalAlert('g')">G KA PA BA?</button>
+            `;
+        }
+
+        function finalAlert(choice) {
+            if(choice === 'ok') {
+                alert("Kunwari okay.");
+            } else {
+                alert("Ge, paka-tanga pa.");
+            }
+            location.reload(); 
+        }
+    </script>
+</body>
+</html>
